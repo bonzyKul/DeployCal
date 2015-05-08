@@ -94,14 +94,14 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         };
 
 
-        $scope.init = function($scope) {
+        $scope.init = function() {
             $('#calendar').fullCalendar({
                 header: {
                   left: 'prev,next today',
                   center: 'title',
                   right: 'month,agendaWeek,agendaDay'
                 },
-                editable: true,
+                editable: $scope.authentication.user || false,
                 selectable: true,
                 businessHours: true,
                 weekends: true,
