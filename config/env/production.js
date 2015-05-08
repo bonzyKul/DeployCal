@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/deploycal',
+	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://heroku_app36657423:heroku_app36657423@ds031571.mongolab.com:31571/heroku_app36657423',
 	assets: {
 		lib: {
 			css: [
