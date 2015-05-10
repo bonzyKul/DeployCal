@@ -1,0 +1,62 @@
+<div class="modal-header" xmlns="http://www.w3.org/1999/html">
+    <h3>Create Event</h3>
+</div>
+<div class="modal-body">
+    <!--<div class="col-md-12">-->
+        <form class="form-horizontal">
+            <fieldset>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="sizing-addon1">Event Title</span>
+                        <input type="text" data-ng-model="event.title" id="title" class="form-control" placeholder="Event Title" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p class="input-group">
+                        <span class="input-group-addon" id="sizing-addon1">Start Date</span>
+                        <input type="text" class="form-control" datepicker-popup ng-model="event.startDate" is-open="openedStart" ng-required="true" placeholder="Start Date"/>
+                         <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openStart($event)">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p class="input-group">
+                        <span class="input-group-addon" id="sizing-addon1">End Date   </span>
+                        <input type="text" class="form-control" datepicker-popup ng-model="event.endDate" is-open="openedEnd" ng-required="true" placeholder="End Date"/>
+                         <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openEnd($event)">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <div class="input-group input-group-lg">
+                    <span class="input-group-addon">
+                        <input type="checkbox" data-ng-model="event.eventFreeze" aria-label="...">Holiday / Freeze
+                    </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="sizing-addon1">Color</span>
+                        <input colorpicker="hex" type="text" ng-model="event.eventColor" placeholder="select Color"/>
+                    </div>
+                </div>
+                <div data-ng-show="error" class="text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+            </fieldset>
+        </form>
+    <!--</div>-->
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

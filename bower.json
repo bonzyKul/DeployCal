@@ -15,6 +15,8 @@
     "angular-ui-utils": "~0.1.1",
     "angular-ui-router": "~0.2.11",
     "fullcalendar": "~2.3.1",
-    "angular-material": "~0.9.0"
+    "angular-material": "~0.9.0",
+    "angularjs-color-picker": "~0.3.1",
+    "tinycolor": "~1.1.2"
   }
 }

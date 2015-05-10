@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'deploycal';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate', 'ngAria', 'ngTouch',  'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ngMaterial'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate', 'ngAria', 'ngTouch',  'ngSanitize', 'ui.router', 'ui.bootstrap', 'ui.utils', 'ngMaterial', 'colorpicker.module'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {
