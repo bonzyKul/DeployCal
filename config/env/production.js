@@ -9,7 +9,8 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap.min.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
                 'public/lib/fullcalendar/dist/fullcalendar.css',
-                'public/lib/angular-bootstrap-colorpicker/css/colorpicker.min.css'
+                'public/lib/angular-bootstrap-colorpicker/css/colorpicker.min.css',
+                'public/lib/qtip2/jquery.qtip.min.css'
 			],
 			js: [
                 'public/lib/jquery/dist/jquery.min.js',
@@ -27,7 +28,8 @@ module.exports = {
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
                 'public/lib/fullcalendar/dist/fullcalendar.min.js',
                 'public/lib/tinycolor/tinycolor.js',
-                'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js'
+                'public/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js',
+                'public/lib/qtip2/jquery.qtip.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',

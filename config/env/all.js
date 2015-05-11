@@ -17,7 +17,8 @@ module.exports = {
                 'public/lib/angular-bootstrap-colorpicker/css/colorpicker.css',
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-                'public/lib/fullcalendar/dist/fullcalendar.css'
+                'public/lib/fullcalendar/dist/fullcalendar.css',
+                'public/lib/qtip2/jquery.qtip.css'
 
 			],
 			js: [
@@ -37,7 +38,8 @@ module.exports = {
                 'public/lib/angular-bootstrap/ui-bootstrap.js',
                 'public/lib/angular-material/angular-material.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-                'public/lib/fullcalendar/dist/fullcalendar.js'
+                'public/lib/fullcalendar/dist/fullcalendar.js',
+                'public/lib/qtip2/jquery.qtip.js'
 
 			]
 		},
