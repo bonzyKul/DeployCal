@@ -320,7 +320,18 @@ var events = function() {
                 eventLimit: true,
                 eventRender: function(event, element) {
                     element.qtip({
-                        content: event.title
+                        content: event.title,
+                        style: {
+                            tip: {
+                                corner: true,
+                                height: 24
+                            }
+                        },
+                        show: {
+                            effect: function(offset) {
+                                $(this).slideDown(150); // "this" refers to the tooltip
+                            }
+                        }
                     });
                 }
             });
