@@ -17,6 +17,7 @@
     "fullcalendar": "~2.3.1",
     "angular-material": "~0.9.0",
     "angularjs-color-picker": "~0.3.1",
-    "tinycolor": "~1.1.2"
+    "tinycolor": "~1.1.2",
+    "angular-bootstrap-colorpicker": "~3.0.17"
   }
 }
