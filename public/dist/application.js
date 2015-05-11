@@ -142,15 +142,11 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                         calEvent.start = result.startDate;
                         calEvent.end = result.endDate;
                         var eventsdatumId = calEvent.id;
-                        //console.log('result ID ' +  result.id);
-                        //console.log(calEvent);
                         var eventsdatum = {
                             name: calEvent.title,
                             startDate: calEvent.start,
                             endDate: calEvent.end
                         };
-                        //console.log('print eventsdatum after update');
-                        //console.log(eventsdatum);
                         $http.put('/eventsdata/' + eventsdatumId, eventsdatum).success(function(status) {
                            //console.log(status);
                         }).error(function(errorResponse){
@@ -160,9 +156,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     }
                 },function(){
                     //on cancel button press
-                    //console.log('Modal Closed');
-                }, function() {
-                    //console.log('delete pressed');
                 });
             } else {
                 alert('Please sign in to Update an Event');
@@ -231,11 +224,9 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     findOne(status._id);
                 }). error(function(errorResponse) {
                     console.log(errorResponse);
-                    //alert('an unexpected error occured' + errorResponse);
                 });
             },function(){
                 //on cancel button press
-                //console.log('Modal Closed');
             });
         } else {
             alert('Please sign in to create an Event');
@@ -275,10 +266,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 var findOne = function(eventsdatumId) {
     $http.get('/eventsdata/' + eventsdatumId).success(function(data) {
-        //console.log(JSON.stringify(data));
-        //console.log(data.length);
-        $scope.events = {id: data._id, title: data.name, start: data.startDate, end: data.endDate,overlap: data.overlap,rendering: data.rendering, color: data.color,allDay: false};
-        //console.log($scope.events);
+        $scope.events = {id: data._id, title: data.name, start: data.startDate, end: data.endDate,overlap: data.overlap,rendering: data.rendering, color: data.color,allDay: true};
         $('#calendar').fullCalendar('renderEvent', $scope.events, true); // stick? = true
     }).error(function() {
         alert('an unexpected error occured');
@@ -288,10 +276,8 @@ var findOne = function(eventsdatumId) {
         //retrieve events
 var events = function() {
             $http.get('/eventsdata').success(function(data) {
-                //console.log(JSON.stringify(data));
-                //console.log(data.length);
                 for(var i = 0; i < data.length; i++) {
-                    $scope.events[i] = {id: data[i]._id, title: data[i].name, start: data[i].startDate, end: data[i].endDate,overlap: data[i].overlap,rendering: data[i].rendering,color: data[i].color,allDay: false};
+                    $scope.events[i] = {id: data[i]._id, title: data[i].name, start: data[i].startDate, end: data[i].endDate,overlap: data[i].overlap,rendering: data[i].rendering,color: data[i].color,allDay: true};
                     //console.log($scope.events[i]);
                     $('#calendar').fullCalendar('renderEvent', $scope.events[i], true); // stick? = true
                 }
@@ -310,16 +296,37 @@ var events = function() {
                 },
                 editable: $scope.authentication.user || false,
                 selectable: true,
+                selectHelper: true,
                 businessHours: true,
                 weekends: true,
                 weekNumbers: true,
                 droppable: true,
+                eventDrop: function(event, delta, revertFunc) {
+                    if($scope.authentication.user) {
+                        var eventsdatumId = event.id;
+                        var eventsdatum = {
+                            startDate: event.start,
+                            endDate: event.end
+                        };
+                        $http.put('/eventsdata/' + eventsdatumId, eventsdatum).success(function(status) {
+                            //console.log(status);
+                        }).error(function(errorResponse){
+                            console.log(errorResponse);
+                        });
+                    }
+                },
                 select:createEvent,
                 eventClick: updateEvent,
-                eventLimit: true
+                eventLimit: true,
+                eventRender: function(event, element) {
+                    element.qtip({
+                        content: event.title
+                    });
+                }
             });
 
         };
+
 
         /* add custom event*/
        var addEvent = function(start, end) {
@@ -342,8 +349,7 @@ var events = function() {
                }
                $('#calendar').fullCalendar('unselect');
            } else {
-               //prompt("Please sign in to create an Event");
-               alert("Please sign in to create an Event");
+               alert('Please sign in to create an Event');
                $('#calendar').fullCalendar('unselect');
            }
         };
