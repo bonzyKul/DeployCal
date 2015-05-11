@@ -12,7 +12,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 
 
-        $scope.event = {title: '', startdate: '', endDate: '', overlap: true, color: '', deleteEvent: '' };
+        $scope.event = {title: '', startdate: '', endDate: '', overlap: true, rendering: '', color: '', deleteEvent: '' };
 
         $scope.events = [];
 
@@ -57,6 +57,12 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                         calEvent.title = result.title;
                         calEvent.start = result.startDate;
                         calEvent.end = result.endDate;
+                        var eventsdatumId = calEvent.id;
+                        $http.put('/eventsdata' + eventsdatumId).success(function(status) {
+                           console.log(status);
+                        }).error(function(errorResponse){
+                           console.log(errorResponse);
+                        });
                         $('#calendar').fullCalendar('updateEvent',calEvent,true);
                     }
                 },function(){
@@ -114,11 +120,17 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
             modalInstance.result.then(function(result){
                 console.log(result);
+                if(result.eventFreeze) {
+                    result.rendering = 'background';
+                } else {
+                    result.rendering = '';
+                }
                 var eventsdatum = new Eventsdata ({
                     name: result.title,
                     startDate: result.startDate,
                     endDate: result.endDate,
                     overlap: !result.eventFreeze,
+                    rendering: result.rendering,
                     color: result.eventColor
                 });
                 $http.post('/eventsdata',eventsdatum).success(function(status){
@@ -172,7 +184,7 @@ var findOne = function(eventsdatumId) {
     $http.get('/eventsdata/' + eventsdatumId).success(function(data) {
         console.log(JSON.stringify(data));
         console.log(data.length);
-        $scope.events = {id: data._id, title: data.name, start: data.startDate, end: data.endDate,overlap: data.overlap,color: data.color,allDay: false};
+        $scope.events = {id: data._id, title: data.name, start: data.startDate, end: data.endDate,overlap: data.overlap,rendering: data.rendering, color: data.color,allDay: false};
         console.log($scope.events);
         $('#calendar').fullCalendar('renderEvent', $scope.events, true); // stick? = true
     }).error(function() {
@@ -186,7 +198,7 @@ var events = function() {
                 console.log(JSON.stringify(data));
                 console.log(data.length);
                 for(var i = 0; i < data.length; i++) {
-                    $scope.events[i] = {id: data[i]._id, title: data[i].name, start: data[i].startDate, end: data[i].endDate,overlap: data[i].overlap,color: data[i].color,allDay: false};
+                    $scope.events[i] = {id: data[i]._id, title: data[i].name, start: data[i].startDate, end: data[i].endDate,overlap: data[i].overlap,rendering: data[i].rendering,color: data[i].color,allDay: false};
                     console.log($scope.events[i]);
                     $('#calendar').fullCalendar('renderEvent', $scope.events[i], true); // stick? = true
                 }
