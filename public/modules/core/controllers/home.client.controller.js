@@ -6,12 +6,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
 
-        //var title;
-        //var startDate;
-        //var endDate;
-
-
-
         $scope.event = {title: '', startdate: '', endDate: '', overlap: true, rendering: '', color: '', deleteEvent: '' };
 
         $scope.events = [];
@@ -44,11 +38,11 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
                 modalInstance.result.then(function(result){
                     if(result.deleteEvent === 'Y'){
-                        console.log('delete pressed');
+                        //console.log('delete pressed');
                         var eventsdatumId = calEvent.id;
 
                         $http.delete('/eventsData/' + eventsdatumId).success(function(status){
-                            console.log(eventsdatumId);
+                            //console.log(eventsdatumId);
                             $('#calendar').fullCalendar('removeEvents',eventsdatumId);
                         }).error(function(errorResponse) {
                            console.log(errorResponse);
@@ -58,8 +52,17 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                         calEvent.start = result.startDate;
                         calEvent.end = result.endDate;
                         var eventsdatumId = calEvent.id;
-                        $http.put('/eventsdata' + eventsdatumId).success(function(status) {
-                           console.log(status);
+                        //console.log('result ID ' +  result.id);
+                        //console.log(calEvent);
+                        var eventsdatum = {
+                            name: calEvent.title,
+                            startDate: calEvent.start,
+                            endDate: calEvent.end
+                        };
+                        //console.log('print eventsdatum after update');
+                        //console.log(eventsdatum);
+                        $http.put('/eventsdata/' + eventsdatumId, eventsdatum).success(function(status) {
+                           //console.log(status);
                         }).error(function(errorResponse){
                            console.log(errorResponse);
                         });
@@ -67,12 +70,12 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     }
                 },function(){
                     //on cancel button press
-                    console.log('Modal Closed');
+                    //console.log('Modal Closed');
                 }, function() {
-                    console.log('delete pressed');
+                    //console.log('delete pressed');
                 });
             } else {
-                alert("Please sign in to Update an Event");
+                alert('Please sign in to Update an Event');
                 $('#calendar').fullCalendar('unselect');
             }
         };
@@ -119,7 +122,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
             var modalInstance = $modal.open($scope.opts);
 
             modalInstance.result.then(function(result){
-                console.log(result);
+                //console.log(result);
                 if(result.eventFreeze) {
                     result.rendering = 'background';
                 } else {
@@ -134,7 +137,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     color: result.eventColor
                 });
                 $http.post('/eventsdata',eventsdatum).success(function(status){
-                    console.log(status);
+                    //console.log(status);
                     findOne(status._id);
                 }). error(function(errorResponse) {
                     console.log(errorResponse);
@@ -142,10 +145,10 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                 });
             },function(){
                 //on cancel button press
-                console.log('Modal Closed');
+                //console.log('Modal Closed');
             });
         } else {
-            alert("Please sign in to Update an Event");
+            alert('Please sign in to create an Event');
             $('#calendar').fullCalendar('unselect');
         }
     };
@@ -182,10 +185,10 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 var findOne = function(eventsdatumId) {
     $http.get('/eventsdata/' + eventsdatumId).success(function(data) {
-        console.log(JSON.stringify(data));
-        console.log(data.length);
+        //console.log(JSON.stringify(data));
+        //console.log(data.length);
         $scope.events = {id: data._id, title: data.name, start: data.startDate, end: data.endDate,overlap: data.overlap,rendering: data.rendering, color: data.color,allDay: false};
-        console.log($scope.events);
+        //console.log($scope.events);
         $('#calendar').fullCalendar('renderEvent', $scope.events, true); // stick? = true
     }).error(function() {
         alert('an unexpected error occured');
@@ -195,11 +198,11 @@ var findOne = function(eventsdatumId) {
         //retrieve events
 var events = function() {
             $http.get('/eventsdata').success(function(data) {
-                console.log(JSON.stringify(data));
-                console.log(data.length);
+                //console.log(JSON.stringify(data));
+                //console.log(data.length);
                 for(var i = 0; i < data.length; i++) {
                     $scope.events[i] = {id: data[i]._id, title: data[i].name, start: data[i].startDate, end: data[i].endDate,overlap: data[i].overlap,rendering: data[i].rendering,color: data[i].color,allDay: false};
-                    console.log($scope.events[i]);
+                    //console.log($scope.events[i]);
                     $('#calendar').fullCalendar('renderEvent', $scope.events[i], true); // stick? = true
                 }
             }).error(function() {
