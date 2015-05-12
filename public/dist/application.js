@@ -300,6 +300,7 @@ var events = function() {
                 businessHours: true,
                 weekends: true,
                 weekNumbers: true,
+                height: 680,
                 droppable: true,
                 eventDrop: function(event, delta, revertFunc) {
                     if($scope.authentication.user) {

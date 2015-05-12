@@ -1,4 +1,4 @@
-<div class="container" data-ng-controller="HeaderController">
+<div class="container" data-ng-controller="HeaderController" style="background-color: lightcoral; width: 100%">
     <nav id="menu" class="navbar navbar-static-top" role="navigation">
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/#!/" class="navbar-brand text-center">DeployCal</a>
+            <a href="/#!/" class="navbar-brand text-center" style="font-size: 28px; margin-top: 10px; color: #000000; margin-left: 25px">DeployCal</a>
         </div>
         <div class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
             <ul class="nav navbar-nav" data-ng-if="menu.shouldRender(authentication.user);">
@@ -30,7 +30,7 @@
                 <!--</li>-->
                 <li class="divider-vertical"></li>
                 <li ui-route="/signin" ng-class="{active: $uiRoute}">
-                    <a href="/#!/signin">Login</a>
+                    <a href="/#!/signin" style="margin-top: 10px; font-size: 16px; color: #000000; margin-right: 100px">Login</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
