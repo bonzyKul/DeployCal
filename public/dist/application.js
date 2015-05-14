@@ -96,11 +96,11 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
 
-        $scope.event = {title: '', startdate: '', endDate: '', overlap: true, rendering: '', color: '', deleteEvent: '' };
+        $scope.event = {title: '', startdate: '', endDate: '', overlap: true, rendering: '', color: '', deleteEvent: '', deployment: ''};
 
         $scope.events = [];
 
-        var updateEvent =  function(calEvent) {
+        var updateEvent =  function(event) {
             if ($scope.authentication.user) {
                 $scope.opts = {
                     backdrop: true,
@@ -114,22 +114,24 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                     resolve: {
                         items: function() {
                             return angular.copy({
-                                title: calEvent.title,
-                                startDate: calEvent.start,
-                                endDate: calEvent.end
+                                title: event.title,
+                                startDate: event.start,
+                                endDate: event.end,
+                                deployment: event.deployment
                             });
                         }
                     } // empty storage
                 };
 
-                console.log(calEvent.id);
+                console.log(event.id);
+                console.log(event.deployment);
 
                 var modalInstance = $modal.open($scope.opts);
 
                 modalInstance.result.then(function(result){
                     if(result.deleteEvent === 'Y'){
                         //console.log('delete pressed');
-                        var eventsdatumId = calEvent.id;
+                        var eventsdatumId = event.id;
 
                         $http.delete('/eventsData/' + eventsdatumId).success(function(status){
                             //console.log(eventsdatumId);
@@ -138,21 +140,29 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
                            console.log(errorResponse);
                         });
                     } else {
-                        calEvent.title = result.title;
-                        calEvent.start = result.startDate;
-                        calEvent.end = result.endDate;
-                        var eventsdatumId = calEvent.id;
+                        event.title = result.title;
+                        event.start = result.startDate;
+                        event.end = result.endDate;
+                        event.deployment = result.deployment;
+                        var deployment = result.deployment;
+                        if(deployment) {
+                            event.color = '#085c1b';
+                        }
+                        var eventsdatumId = event.id;
                         var eventsdatum = {
-                            name: calEvent.title,
-                            startDate: calEvent.start,
-                            endDate: calEvent.end
+                            name: event.title,
+                            startDate: event.start,
+                            endDate: event.end,
+                            color: event.color,
+                            deployment: deployment
                         };
                         $http.put('/eventsdata/' + eventsdatumId, eventsdatum).success(function(status) {
-                           //console.log(status);
+                           if(status) {
+                               $('#calendar').fullCalendar('updateEvent',event,true);
+                           }
                         }).error(function(errorResponse){
                            console.log(errorResponse);
                         });
-                        $('#calendar').fullCalendar('updateEvent',calEvent,true);
                     }
                 },function(){
                     //on cancel button press
@@ -266,7 +276,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 var findOne = function(eventsdatumId) {
     $http.get('/eventsdata/' + eventsdatumId).success(function(data) {
-        $scope.events = {id: data._id, title: data.name, start: data.startDate, end: data.endDate,overlap: data.overlap,rendering: data.rendering, color: data.color,allDay: true};
+        $scope.events = {id: data._id, title: data.name, start: data.startDate, end: data.endDate,overlap: data.overlap,rendering: data.rendering, color: data.color,deployment: data.deployment,allDay: true};
         $('#calendar').fullCalendar('renderEvent', $scope.events, true); // stick? = true
     }).error(function() {
         alert('an unexpected error occured');
@@ -277,7 +287,7 @@ var findOne = function(eventsdatumId) {
 var events = function() {
             $http.get('/eventsdata').success(function(data) {
                 for(var i = 0; i < data.length; i++) {
-                    $scope.events[i] = {id: data[i]._id, title: data[i].name, start: data[i].startDate, end: data[i].endDate,overlap: data[i].overlap,rendering: data[i].rendering,color: data[i].color,allDay: true};
+                    $scope.events[i] = {id: data[i]._id, title: data[i].name, start: data[i].startDate, end: data[i].endDate,overlap: data[i].overlap,rendering: data[i].rendering,color: data[i].color, deployment: data[i].deployment,allDay: true};
                     //console.log($scope.events[i]);
                     $('#calendar').fullCalendar('renderEvent', $scope.events[i], true); // stick? = true
                 }
@@ -302,9 +312,11 @@ var events = function() {
                 weekNumbers: true,
                 height: 680,
                 droppable: true,
+                events: $scope.event,
                 eventDrop: function(event, delta, revertFunc) {
                     if($scope.authentication.user) {
                         var eventsdatumId = event.id;
+                        console.log(event.deployment);
                         var eventsdatum = {
                             startDate: event.start,
                             endDate: event.end

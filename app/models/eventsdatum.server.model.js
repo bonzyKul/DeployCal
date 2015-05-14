@@ -40,6 +40,9 @@ var EventsdatumSchema = new Schema({
     },
     color: {
         type: String
+    },
+    deployment: {
+        type: Boolean
     }
 });
 
